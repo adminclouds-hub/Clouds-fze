@@ -3,21 +3,24 @@
   var CATS=['Chocolates','Confectionery','Tea','Coffee','Honey','Beverages','Packaged Food','Custom Sourcing'];
   var UNITS=['Cartons','Pieces','Kg','Pallets','Containers (20ft)','Containers (40ft)'];
   var items=document.getElementById('items'), form=document.getElementById('rfq'), status=document.getElementById('status');
-  var preset=new URLSearchParams(location.search).get('cat');
+  var qs=new URLSearchParams(location.search), preset=qs.get('cat');
+  var PRODS=window.CLOUDS_PRODUCTS||[], pp=PRODS.filter(function(p){return p.slug===qs.get('product')})[0];
+  if(PRODS.length){var dl=document.createElement('datalist');dl.id='prodlist';dl.innerHTML=PRODS.map(function(p){return '<option value="'+p.name+' - '+p.pack+'">'}).join('');document.body.appendChild(dl);}
 
   function opts(list,sel){ return list.map(function(v){ return '<option'+(v===sel?' selected':'')+'>'+v+'</option>'; }).join(''); }
-  function addRow(cat){
+  function addRow(cat,prodName){
     var n=items.children.length+1, row=document.createElement('div');
     row.className='item-row';
     row.innerHTML='<div class="field"><label>Category</label><select class="i-cat">'+opts(CATS,cat)+'</select></div>'+
-      '<div class="field prod"><label>Product, brand &amp; pack size</label><input class="i-prod" placeholder="e.g. Milk chocolate bar 100g"></div>'+
+      '<div class="field prod"><label>Product, brand &amp; pack size</label><input class="i-prod" list="prodlist" placeholder="Start typing, e.g. Twinings, Anchor, Vimto"></div>'+
       '<div class="field"><label>Quantity</label><input class="i-qty" type="number" min="1" inputmode="numeric"></div>'+
       '<div class="field"><label>Unit</label><select class="i-unit">'+opts(UNITS)+'</select></div>'+
       '<button type="button" class="rm" aria-label="Remove product">×</button>';
+    if(prodName) row.querySelector('.i-prod').value=prodName;
     row.querySelector('.rm').addEventListener('click',function(){ if(items.children.length>1) row.remove(); });
     items.appendChild(row);
   }
-  addRow(preset && CATS.indexOf(preset)>-1 ? preset : CATS[0]);
+  if(pp) addRow(pp.cat,pp.name+' - '+pp.pack); else addRow(preset && CATS.indexOf(preset)>-1 ? preset : CATS[0]);
   document.getElementById('addItem').addEventListener('click',function(){ addRow(); });
 
   function collect(){
