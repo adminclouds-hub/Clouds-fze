@@ -6,5 +6,5 @@ window.CLOUDS_CONFIG = {
   phoneDisplay: "+971 50 278 6759",
   address: "United Arab Emirates",    // TODO: free zone / city
   // Free form service (Web3Forms) access key. Each quote request is emailed to the address linked to this key.
-  web3formsKey: ""                    // TODO: create free key at web3forms.com with the Clouds FZE email
+  web3formsKey: "e4da4e93-7703-4380-817c-f9a14359ab71"   // Web3Forms form "Clouds FZE Quotes"
 };
