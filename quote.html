@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Request a Wholesale Quote | Clouds FZE LLC</title>
+<meta name="description" content="Request a wholesale quotation from Clouds FZE LLC for packaged food, chocolates, confectionery, tea, coffee, honey and beverages. UAE and Bangladesh.">
+<meta name="theme-color" content="#216B36">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html"><img src="icons/mark.svg" alt=""><span>Clouds FZE<small>Wholesale &amp; Trading</small></span></a>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav-links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#products">Products</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#contact">Contact</a>
+      <a class="btn btn-primary btn-sm" href="quote.html">Request a Quote</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="page-hero"><div class="wrap">
+  <span class="eyebrow">Wholesale quotation</span>
+  <h1 style="font-size:clamp(1.9rem,4.5vw,2.8rem)">Request a Quote</h1>
+  <p class="muted" style="max-width:620px;margin:0">List the products you need. We reply with prices, availability and lead time, usually within 24 hours.</p>
+</div></div>
+
+<section style="padding-top:40px">
+<div class="wrap quote-grid">
+<form class="form-card" id="rfq" novalidate>
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+  <div class="form-section">
+    <h3><span class="n">1</span>Your details</h3>
+    <div class="fields">
+      <div class="field"><label for="name">Full name <span class="req">*</span></label><input id="name" name="name" required autocomplete="name"></div>
+      <div class="field"><label for="company">Company name <span class="req">*</span></label><input id="company" name="company" required autocomplete="organization"></div>
+      <div class="field"><label for="email">Email <span class="req">*</span></label><input id="email" name="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="phone">Phone / WhatsApp <span class="req">*</span></label><input id="phone" name="phone" type="tel" required autocomplete="tel" placeholder="+971 or +880"></div>
+      <div class="field"><label for="buyer">Business type</label>
+        <select id="buyer" name="business_type"><option>Retailer / Supermarket</option><option>Distributor / Wholesaler</option><option>Importer</option><option>Hotel / Restaurant / Café</option><option>Corporate / Gifting</option><option>Other</option></select></div>
+      <div class="field"><label for="country">Deliver to <span class="req">*</span></label>
+        <select id="country" name="delivery_country" required><option value="">Choose…</option><option>United Arab Emirates</option><option>Bangladesh</option><option>Other country</option></select></div>
+      <div class="field full"><label for="city">City / delivery location</label><input id="city" name="city" placeholder="e.g. Dubai, Sharjah, Dhaka, Chattogram"></div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3><span class="n">2</span>Products needed</h3>
+    <div class="items" id="items"></div>
+    <button type="button" class="btn btn-outline btn-sm" id="addItem" style="margin-top:12px">+ Add another product</button>
+  </div>
+
+  <div class="form-section">
+    <h3><span class="n">3</span>Order details</h3>
+    <div class="fields">
+      <div class="field"><label for="when">Needed by</label><input id="when" name="needed_by" type="date"></div>
+      <div class="field"><label for="freq">Order frequency</label>
+        <select id="freq" name="frequency"><option>One-time order</option><option>Weekly</option><option>Monthly</option><option>Quarterly</option></select></div>
+      <div class="field full"><label>Services needed</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="services" value="Delivery"><span>Delivery</span></label>
+          <label class="chip"><input type="checkbox" name="services" value="Export shipping"><span>Export shipping</span></label>
+          <label class="chip"><input type="checkbox" name="services" value="Customs documents"><span>Customs documents</span></label>
+          <label class="chip"><input type="checkbox" name="services" value="Samples"><span>Samples</span></label>
+          <label class="chip"><input type="checkbox" name="services" value="Private label"><span>Private label</span></label>
+        </div></div>
+      <div class="field full"><label for="notes">Anything else?</label><textarea id="notes" name="notes" placeholder="Preferred brands, target prices, certifications (Halal, etc.), packaging…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit" id="submitBtn">Send quote request</button>
+    <button class="btn btn-wa" type="button" id="waBtn">Send via WhatsApp</button>
+  </div>
+  <p class="note" style="margin-top:12px">By sending, you agree that Clouds FZE LLC may contact you about this request. We do not share your details.</p>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+</form>
+
+<aside class="side-info">
+  <div class="card"><h3>Fast response</h3><p class="muted" style="margin:0">Most quotations are sent within 24 hours on working days.</p></div>
+  <div class="card"><h3>Any quantity</h3><p class="muted" style="margin:0">From mixed cartons to full container loads.</p></div>
+  <div class="card"><h3>Prefer to talk?</h3><p class="muted">Message us directly.</p><a class="btn btn-wa btn-sm js-wa" href="#" target="_blank" rel="noopener">WhatsApp</a> <a class="btn btn-outline btn-sm js-email" href="#">Email</a></div>
+</aside>
+</div>
+</section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html" style="color:#fff"><img src="icons/mark.svg" alt=""><span>Clouds FZE LLC<small style="color:#8AD648">Wholesale &amp; Trading</small></span></a>
+        <p style="margin-top:14px">Wholesale packaged food, chocolates, confectionery, tea, coffee, honey and beverages.</p>
+      </div>
+      <div><h4>Contact</h4><ul><li><a class="js-email" href="#">Email</a></li><li><a class="js-phone" href="#">Phone</a></li><li><a class="js-wa" href="#" target="_blank" rel="noopener">WhatsApp</a></li><li class="js-address"></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="index.html#about">About</a></li><li><a href="index.html#products">Products</a></li><li><a href="index.html#services">Services</a></li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>© <span class="js-year"></span> Clouds FZE LLC. All rights reserved.</span><span>Clouds FZE LLC is a separate legal entity.</span></div>
+  </div>
+</footer>
+
+<div class="install" id="install"><img src="icons/icon-192.png" alt=""><div><strong>Install Clouds FZE</strong>Add to your home screen for quick quotes.</div><button class="btn btn-primary btn-sm" id="installBtn">Install</button><button class="x" id="installX" aria-label="Close">×</button></div>
+<script src="app.js"></script>
+<script src="quote.js"></script>
+</body>
+</html>
