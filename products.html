@@ -46,6 +46,9 @@
 .gal .th img{width:100%;height:100%;object-fit:cover}
 .gal .th .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;background:rgba(0,0,0,.25)}
 .gal h3{margin:10px 2px 0;font-size:1rem}
+.gal .galc{margin:2px 2px 0;font-size:.85rem;color:#4d6457;min-height:1.2em}
+.gal .th{max-height:30vh;overflow-y:auto}
+.pcard .vlist{font-size:.8rem}
 .gal .x{position:absolute;top:-14px;right:-6px;width:38px;height:38px;border-radius:50%;border:0;background:#8AD648;color:#183426;font-size:1.4rem;cursor:pointer}
 @media (max-width:960px){.pgrid{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:720px){.pgrid{grid-template-columns:1fr 1fr;gap:12px}.pcard .b{padding:10px 12px 12px}.ramadan svg.moon{width:90px;opacity:.35}}
@@ -97,7 +100,7 @@
   </div>
 </footer>
 <div class="install" id="install"><img src="icons/icon-192.png" alt=""><div><strong>Install Clouds FZE</strong>Add to your home screen for quick quotes.</div><button class="btn btn-primary btn-sm" id="installBtn">Install</button><button class="x" id="installX" aria-label="Close">×</button></div>
-<div class="gal" id="gal" role="dialog" aria-modal="true"><div class="box"><button class="x" id="galX" aria-label="Close">×</button><div class="main" id="galMain"></div><div class="th" id="galTh"></div><h3 id="galT"></h3></div></div>
+<div class="gal" id="gal" role="dialog" aria-modal="true"><div class="box"><button class="x" id="galX" aria-label="Close">×</button><div class="main" id="galMain"></div><div class="th" id="galTh"></div><h3 id="galT"></h3><p id="galC" class="galc"></p></div></div>
 <script src="products.js"></script>
 <script>
 (function(){
@@ -108,9 +111,10 @@
     grid.innerHTML=P.filter(function(p){return cat==='All'||p.cat===cat}).map(function(p){
       var known=p.prod||p.exp;
       var d=known?('Production: '+(p.prod||'on request')+'<br>Expiry: '+(p.exp||'on request')):'Production &amp; expiry dates on request';
-      return '<article class="pcard"><button type="button" class="ph" data-slug="'+p.slug+'" aria-label="View photos and video of '+esc(p.name)+'"><img loading="lazy" src="img/products/'+p.slug+'.jpg" alt="'+esc(p.name)+', '+esc(p.pack)+'"><span class="cnt">3 photos + video</span></button>'+
+      return '<article class="pcard"><button type="button" class="ph" data-slug="'+p.slug+'" aria-label="View photos and video of '+esc(p.name)+'"><img loading="lazy" src="'+(p.thumb||'img/products/'+p.slug+'.jpg')+'" alt="'+esc(p.name)+', '+esc(p.pack)+'"><span class="cnt">'+(p.variants?p.variants.length+' sizes &amp; flavours':(p.noVideo?'3 photos':'3 photos + video'))+'</span></button>'+
         '<div class="b"><span class="tag-r">Ramadan offer</span><h3>'+esc(p.name)+'</h3>'+
         '<div class="meta">'+esc(p.pack)+(p.caseQty?'<br>'+esc(p.caseQty):'')+'</div>'+
+        (p.variants?'<div class="meta vlist">'+p.variants.slice(0,5).map(function(v){return esc(v.n)}).join('<br>')+(p.variants.length>5?'<br><b>+ '+(p.variants.length-5)+' more, tap the photo</b>':'')+'</div>':'')+
         '<div class="dates'+(known?'':' tbc')+'">'+d+'</div>'+
         '<div class="meta">'+esc(p.desc)+'</div>'+
         '<a class="btn btn-primary btn-sm" href="quote.html?product='+p.slug+'">Get price</a></div></article>';
@@ -120,8 +124,13 @@
   fl.innerHTML=cats.map(function(c){return '<button type="button">'+c+'</button>'}).join('');
   [].forEach.call(fl.children,function(b){b.addEventListener('click',function(){render(b.textContent)})});
   var gal=document.getElementById('gal'),gm=document.getElementById('galMain'),gt=document.getElementById('galTh');
-  function media(slug){return [{t:'img',src:'img/hd/'+slug+'.jpg'},{t:'img',src:'img/scene/'+slug+'.jpg'},{t:'img',src:'img/post/'+slug+'.jpg'},{t:'vid',src:'video/'+slug+'.mp4',poster:'img/post/'+slug+'.jpg'}]}
-  function show(m){gm.innerHTML=m.t==='vid'?'<video src="'+m.src+'" poster="'+m.poster+'" autoplay muted loop playsinline controls></video>':'<img src="'+m.src+'" alt="">'}
+  function media(slug){var p=P.filter(function(x){return x.slug===slug})[0];
+    if(p.variants) return p.variants.map(function(v){return {t:'img',src:v.i,cap:v.n}});
+    var M=p.imgs?p.imgs.map(function(s){return {t:'img',src:s}}):[{t:'img',src:'img/hd/'+slug+'.jpg'},{t:'img',src:'img/scene/'+slug+'.jpg'},{t:'img',src:'img/post/'+slug+'.jpg'}];
+    if(!p.noVideo) M.push({t:'vid',src:'video/'+slug+'.mp4',poster:'img/post/'+slug+'.jpg'});
+    return M;
+    return [{t:'img',src:'img/hd/'+slug+'.jpg'},{t:'img',src:'img/scene/'+slug+'.jpg'},{t:'img',src:'img/post/'+slug+'.jpg'},{t:'vid',src:'video/'+slug+'.mp4',poster:'img/post/'+slug+'.jpg'}]}
+  function show(m){document.getElementById('galC').textContent=m.cap||'';gm.innerHTML=m.t==='vid'?'<video src="'+m.src+'" poster="'+m.poster+'" autoplay muted loop playsinline controls></video>':'<img src="'+m.src+'" alt="">'}
   function openGal(slug){var p=P.filter(function(x){return x.slug===slug})[0],M=media(slug);
     document.getElementById('galT').textContent=p.name;
     gt.innerHTML=M.map(function(m,i){return '<button type="button" data-i="'+i+'"'+(i?'':' class="on"')+'><img src="'+(m.t==='vid'?m.poster:m.src)+'" alt="">'+(m.t==='vid'?'<span class="play">▶</span>':'')+'</button>'}).join('');
